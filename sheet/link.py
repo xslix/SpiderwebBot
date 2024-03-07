@@ -58,7 +58,7 @@ def get_district_links(name, secret=99, take=999):
         if (len(row) > 5
                 and (str(row[4]).lower() == name.lower()
                      or str(row[5]).lower() == name.lower())
-                and secret >= int(row[2])):
+                and row[2] != "" and row[3] != "" and secret >= int(row[2])):
             links.append(str(row[3]))
     random.shuffle(links)
     return links[:take]

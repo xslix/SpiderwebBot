@@ -12,4 +12,5 @@ class Call(DbModel):
         table_name = 'Call'
 
 
+Call.drop_table()
 Call.create_table()

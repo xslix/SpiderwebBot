@@ -1,9 +1,14 @@
-import datetime
 import random
+import threading
+import time
 
 from db.player import *
 from db.call import *
 from sheet.link import *
+
+from bot import bot
+from db import Token, Player
+
 def start():
     x = threading.Thread(target=work)
     x.start()
@@ -14,8 +19,8 @@ def work():
     while True:
         calls = Call.select()
         for call in calls:
-            if call.end_timestamp < datetime.now():
+            if call.end_timestamp < datetime.datetime.now():
                 bot.send_message(call.called_id, f"Звонок завершен по времени.", parse_mode="html")
                 bot.send_message(call.caller_id, f"Звонок завершен по времени.", parse_mode="html")
-            call.delete_instance()
+                call.delete_instance()
         time.sleep(1)

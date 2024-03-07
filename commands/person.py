@@ -1,4 +1,4 @@
-.from datetime import timedelta
+from datetime import timedelta
 import random
 
 from telebot.types import ChatPermissions
@@ -27,7 +27,7 @@ def person(message: telebot.types.Message):
                          parse_mode="html")
         return
     name = words[1]
-    with_type = player.hase_right(Rights.SEE_PERSON_TYPE)
+    with_type = player.has_right(Rights.SEE_PERSON_TYPE)
     success, desc = npc.get_person_description(name, with_type)
     if not success:
         bot.send_message(message.chat.id, f"Житель с таким именем не найден.", parse_mode="html")
@@ -56,7 +56,7 @@ def links(message: telebot.types.Message):
                          parse_mode="html")
         return
 
-    name, count = issues[message.from_user.id]
+    name, _ = issues[message.from_user.id]
     skill = random.choice(
         skills.skills_by_cats["Обаяние"] + skills.skills_by_cats["Восприятие"] + skills.skills_by_cats["Социология"])
 
@@ -87,4 +87,7 @@ def return_links(player_id, chat_id, suc_num):
     (name, count) = issues[player_id]
     del issues[player_id]
     links = link.get_person_links(name, suc_num)
+    if len(links) == 0:
+        bot.send_message(chat_id, f"К сожалению, у этого персонажа нет связей с подходящей секретностью или просто их нет.", parse_mode="html")
+        return
     bot.send_message(chat_id, f"Ты узнаешь: \n" + "\n".join(links), parse_mode="html")

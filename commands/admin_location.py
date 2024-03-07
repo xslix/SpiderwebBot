@@ -2,11 +2,13 @@ from bot import bot
 from commands import *
 from util import is_correct_location_name
 from log import *
-
+import threading
+mutex = threading.Lock()
 
 @bot.message_handler(is_admin=True, length=3, commands=['location_create'])
 @log_handler
 def add_location(message: telebot.types.Message):
+    mutex.acquire()
     loc = Location.get_or_none(Location.name == message.html_text.split()[1])
     if loc is not None:
         bot.send_message(message.chat.id,
@@ -39,6 +41,7 @@ def add_location(message: telebot.types.Message):
     bot.send_message(message.chat.id,
                      f"{'Приватная' if loc.is_private else 'Публичная'} локация {loc.name} создана",
                      parse_mode="html")
+    mutex.release()
 
 
 @bot.message_handler(is_admin=True, length=1, commands=['location_delete'])

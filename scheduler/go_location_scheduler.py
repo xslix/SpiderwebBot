@@ -17,5 +17,5 @@ def work():
         players = Player.select()
         for p in players:
             if datetime.datetime.now()-datetime.timedelta(seconds=1) < p.busy_until < datetime.datetime.now():
-                bot.send_message(p.chat_id, f"Время в пути вышло, используй /go чтобы войти в локацию")
+                bot.send_message(p.chat_id, f"Время в пути вышло, можешь использовать /go чтобы войти в локацию")
         time.sleep(1)

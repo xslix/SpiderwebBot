@@ -178,7 +178,7 @@ def is_reroll_call(call):
 
 def hard_brake(chat_id, user_id):
     broke_masquerade(user_id)
-    bot.send_message(message.chat.id,f"Маскарад нарушен.", parse_mode="html")
+    bot.send_message(chat_id, f"Маскарад нарушен.", parse_mode="html")
 
 
 

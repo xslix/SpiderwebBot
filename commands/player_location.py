@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+from  telebot.types import ReplyKeyboardRemove
 
 from bot import bot
 from commands import *
@@ -7,7 +8,7 @@ from db import Player
 from commands.secrets import issues as secret_issues
 from commands.gossips import issues as gossips_issues
 from commands.person import issues as person_issues
-from commands.feed import issues as person_issues
+from commands.feed import issues as feed_issues
 
 
 @bot.message_handler(can_move=True, is_private=True, length=1, commands=['go', 'иду'])
@@ -74,20 +75,29 @@ def go_func(message, name):
         bot.send_message(message.chat.id, f"Локации {name} не существует", parse_mode="html")
         return
 
-    if player.coming_from is not None:
-        from_loc = Location.get_or_none(Location.chat_id == player.coming_from)
-        if from_loc is not None and from_loc.chat_id == loc.chat_id:
-            bot.send_message(message.chat.id,
-                             f"Нельзя вернуться в локацию, из которой начался путь",
-                             parse_mode="html")
-            return
     player.current_location = loc.chat_id
     player.coming_from = None
     player.save()
+    bot.send_message(player.current_location,
+                     f"Сюда кто-то направляется.",
+                     parse_mode="html")
     bot.unban_chat_member(player.current_location, player.chat_id, True)
     link = bot.get_chat(loc.chat_id).invite_link
     bot.send_message(message.chat.id, f"<a href=\"{link}\">Вход в <b>{name}</b></a>", parse_mode="html")
 
+@bot.message_handler(content_types=["new_chat_members"])
+def foo(message):
+    player = Player.get_or_none(Player.chat_id == message.from_user.id)
+    if player is None:
+        return
+    if player.current_location == message.chat.id:
+        bot.send_message(message.chat.id,
+                         f"{player.name} заходит в локацию.",
+                         parse_mode="html")
+    else:
+        bot.send_message(message.chat.id,
+                         f"{player.name} заходит в локацию, но его не должно тут быть!.",
+                         parse_mode="html")
 
 @bot.message_handler(can_move=True, is_private=True, length=1, commands=['exit', 'выход'])
 @log_handler
@@ -99,10 +109,16 @@ def exit(message: telebot.types.Message):
 
     player.coming_from = player.current_location
     player.busy_until = datetime.now() + timedelta(minutes=player.move_duration)
-
-    bot.ban_chat_member(player.current_location,
-                        player.chat_id,
-                        int((datetime.now() + timedelta(minutes=1)).timestamp()))
+    bot.send_message(player.current_location,
+                     f"{player.name} уходит.",
+                     parse_mode="html")
+    for loc in Location.select():
+        try:
+            bot.ban_chat_member(loc.chat_id,
+                                player.chat_id,
+                                int((datetime.now() + timedelta(minutes=1)).timestamp()))
+        except Exception as e:
+            pass
     player.current_location = None
     player.save()
     bot.send_message(message.chat.id,
@@ -126,14 +142,6 @@ def teleport_target(message: telebot.types.Message):
     name = message.html_text.split()[1]
     player = Player.get_or_none(Player.chat_id == message.chat.id)
     if player.current_location is not None:
-        conf = Conflict.get_or_none(Conflict.chat_id == player.current_location)
-        if conf is not None:
-            members = json.loads(conf.members)
-            if player.name in members:
-                bot.send_message(message.chat.id,
-                                 f"Ты не можешь покинуть локацию, так как участвуешь в конфликте.",
-                                 parse_mode="html")
-                return
         bot.ban_chat_member(player.current_location,
                             player.chat_id,
                             int((datetime.now() + timedelta(minutes=1)).timestamp()))

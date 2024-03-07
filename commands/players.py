@@ -38,7 +38,7 @@ def signup(message: telebot.types.Message):
     bot.send_message(message.chat.id, "Ты уже зарегистрирован в системе", parse_mode="html")
 
 
-@bot.message_handler(is_player=False, commands=['signup'])
+@bot.message_handler(is_player=False, commands=['signup', 'start'])
 @log_handler
 def signup(message: telebot.types.Message):
     bot.send_message(message.chat.id, "Usage: /signup name", parse_mode="html")

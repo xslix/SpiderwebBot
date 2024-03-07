@@ -21,7 +21,7 @@ def update_if_needed():
 def update():
    global data
    global update_time
-   data = sheet.sheet.worksheet("Player").get('A3:AO', value_render_option='FORMULA')
+   data = sheet.sheet.worksheet("Player").get('A3:AO', value_render_option='UNFORMATTED_VALUE')
    update_time = datetime.datetime.now()
 
 update()
@@ -41,8 +41,8 @@ def broke_masquerade(user_id):
 
 def signup(name, id):
     for i, row in enumerate(data):
-        if len(row) > 3 and str(row[0]).lower() == str(name):
-            row[3] += 1
+        if len(row) > 3 and str(row[0]).lower() == str(name).lower():
+            row[3] = id
             global writing_tread
             if writing_tread.is_alive():
                 writing_tread.join()

@@ -12,6 +12,7 @@ from db import RollStatus
 import skills
 import random
 from sheet import npc
+from sheet.player import broke_masquerade
 
 
 issues = {}
@@ -36,9 +37,9 @@ def feed(message: telebot.types.Message):
                                       f"Потрать 1 П.И. \n"
                                       f"Соверши бросок навыка <b>{skill}</b>, базовая сложность = 6.",
                      parse_mode="html")
-    issues[message.from_user.id] = name
+    issues[message.from_user.id] = 1
     broke_masquerade(message.from_user.id)
-    player.roll_target = RollTarget.SECRET
+    player.roll_target = RollTarget.FEED
     player.roll_status = RollStatus.WAITING_FOR_ROLL
     player.save()
 

@@ -58,6 +58,9 @@ def return_gossips(player_id, chat_id, suc_num):
     name, count = issues[player_id]
     del issues[player_id]
     links = link.get_district_links(name, suc_num, count)
+    if len(links) == 0:
+        bot.send_message(chat_id, f"К сожалению, в этом районе нет связей с такой секретностью или их вообще нет.", parse_mode="html")
+        return
     bot.send_message(chat_id, f"Ты узнаешь: \n" + "\n".join(links), parse_mode="html")
 
 
