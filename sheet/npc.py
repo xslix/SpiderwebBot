@@ -57,6 +57,7 @@ def get_person_description(name, with_type):
             res = f"<b>{row[0]}</b> — {row[1]}.\n"
             if with_type:
                 res += row[2] + "\n"
+            res += row[3] + "\n"
             res += "Навыки: " + ", ".join([x for x in row[12:19] if x]) + "\n"
             if evident in row:
                 res += f"Очевидные и обычные ходы:\n"
