@@ -62,7 +62,7 @@ def drop_call(message: telebot.types.Message, forced_id=0):
                      f"Звонок окончен/отменен.",
                      parse_mode="html")
 
-    bot.send_message(call.called_id if message.from_user.id == call.caller_id else call.caller_id,
+    bot.send_message(call.called_id if int(message.from_user.id) == int(call.caller_id) else call.caller_id,
                      f"Абонент завершил вызов.",
                      parse_mode="html")
     call.delete_instance()
