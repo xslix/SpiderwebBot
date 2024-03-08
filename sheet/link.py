@@ -25,6 +25,7 @@ update()
 
 
 def get_mask_by_name(name):
+    update_if_needed()
     for row in data:
         if str(row[0]).lower() == name.lower():
             res = f"<b>{row[0]}</b> — {row[1]}.\n"
@@ -41,6 +42,7 @@ def get_mask_by_name(name):
 
 
 def get_char_links(name, secret=99, take=999):
+    update_if_needed()
     links = []
     for row in data:
         if (str(row[0]).lower() == name.lower()
@@ -53,6 +55,7 @@ def get_char_links(name, secret=99, take=999):
 
 
 def get_district_links(name, secret=99, take=999):
+    update_if_needed()
     links = []
     for row in data:
         if (len(row) > 5
@@ -65,6 +68,7 @@ def get_district_links(name, secret=99, take=999):
 
 
 def get_person_links(name, secret=99, take=999):
+    update_if_needed()
     links = []
     for row in data:
         if (len(row) > 5

@@ -23,6 +23,7 @@ update()
 
 
 def get_mask_by_name(name):
+    update_if_needed()
     for row in data:
         if str(row[0]).lower() == name.lower():
             res = f"<b>{row[0]}</b> — {row[1]}.\n"
@@ -39,6 +40,7 @@ def get_mask_by_name(name):
 
 
 def get_district_secrets(name, take):
+    update_if_needed()
     secrets = []
     for row in data:
         if (len(row) > 5
@@ -49,6 +51,7 @@ def get_district_secrets(name, take):
     return secrets[:take]
 
 def get_person_description(name, with_type):
+    update_if_needed()
     for row in data:
         if str(row[0]).lower() == name.lower():
             res = f"<b>{row[0]}</b> — {row[1]}.\n"

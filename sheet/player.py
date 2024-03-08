@@ -28,6 +28,7 @@ update()
 
 
 def broke_masquerade(user_id):
+    update_if_needed()
     global writing_tread
     if writing_tread.is_alive():
         writing_tread.join()
@@ -40,6 +41,7 @@ def broke_masquerade(user_id):
 
 
 def signup(name, id):
+    update_if_needed()
     for i, row in enumerate(data):
         if len(row) > 3 and str(row[0]).lower() == str(name).lower():
             row[3] = id
@@ -56,6 +58,7 @@ def signup(name, id):
 
 
 def get_skill(user_id, name):
+    update_if_needed()
     if name.lower() not in lower_skills:
         return False, 0
     index = lower_skills.index(name.lower())
