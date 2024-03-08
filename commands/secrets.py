@@ -12,7 +12,7 @@ from db import RollStatus
 import skills
 import random
 from sheet import npc
-
+from log import *
 
 issues = {}
 

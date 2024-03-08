@@ -13,7 +13,7 @@ import skills
 import random
 from sheet import npc
 from sheet import link
-
+from log import *
 
 issues = {}
 

@@ -24,7 +24,7 @@ def work():
                 loc.next_gossip_time = datetime.datetime.now() + datetime.timedelta(minutes=random.randint(30, 60))
                 loc.save()
                 continue
-            link = get_district_links(loc.name, 1, 1)
+            link = get_district_links(loc.name, 0, 1)
             if len(link) == 0:
                 continue
             bot.send_message(loc.chat_id, f"<b>Прохожие обсуждают:</b> {link[0]}", parse_mode="html")

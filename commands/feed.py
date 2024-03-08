@@ -13,7 +13,7 @@ import skills
 import random
 from sheet import npc
 from sheet.player import broke_masquerade
-
+from log import *
 
 issues = {}
 

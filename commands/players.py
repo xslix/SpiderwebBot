@@ -1,7 +1,7 @@
 from commands import *
 from util import is_correct_player_name
 from sheet.player import signup as table_signup
-
+from log import *
 
 @bot.message_handler(is_player=False, length=2, commands=['signup'])
 @log_handler
