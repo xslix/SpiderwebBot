@@ -86,7 +86,7 @@ def return_links(player_id, chat_id, suc_num):
         return
     (name, count) = issues[player_id]
     del issues[player_id]
-    links = link.get_person_links(name, suc_num)
+    links = link.get_person_links(name, suc_num, count)
     if len(links) == 0:
         bot.send_message(chat_id, f"К сожалению, у этого персонажа нет связей с подходящей секретностью или просто их нет.", parse_mode="html")
         return

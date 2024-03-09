@@ -59,7 +59,7 @@ def get_person_description(name, with_type):
                 res += row[2] + "\n"
             res += row[3] + "\n"
             res += "Навыки: " + ", ".join([x for x in row[12:19] if x]) + "\n"
-            if evident in row:
+            if (evident in row) or (simple in row):
                 res += f"Очевидные и обычные ходы:\n"
                 if len(row) >= 8 and (row[7] == evident or row[7] == simple):
                     res += f"{row[6]}\n"
