@@ -83,7 +83,7 @@ def answer_call(message: telebot.types.Message, forced_id=0):
     call.end_timestamp = datetime.now()+timedelta(minutes=30)
     call.save()
     bot.send_message(call.caller_id,
-                     f"Абонент поднял трубку. Звонок активен. Потрать 50$. Используй /drop /сбросить, чтобы завершить звонок.",
+                     f"Абонент поднял трубку. Звонок активен. Потрать 10$. Используй /drop /сбросить, чтобы завершить звонок.",
                      parse_mode="html")
     bot.send_message(call.called_id,
                      f"Звонок активен. Используй /drop /сбросить, чтобы завершить звонок.",
