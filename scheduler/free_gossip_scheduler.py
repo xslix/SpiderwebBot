@@ -31,6 +31,6 @@ def work():
             if len(link) > 0:
                 bot.send_message(loc.chat_id, f"<b>Прохожие обсуждают:</b> {link[0]}", parse_mode="html")
                 logging.info(f'В локации {loc.name} выдан слух {link[0]}')
-            loc.next_gossip_time = datetime.datetime.now() + datetime.timedelta(minutes=random.randint(30, 60))
+            loc.next_gossip_time = datetime.datetime.now() + datetime.timedelta(minutes=random.randint(60, 90))
             loc.save()
         time.sleep(1)
