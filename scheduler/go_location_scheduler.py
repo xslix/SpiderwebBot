@@ -14,8 +14,12 @@ def start():
 
 def work():
     while True:
-        players = Player.select()
-        for p in players:
-            if datetime.datetime.now()-datetime.timedelta(seconds=1) < p.busy_until < datetime.datetime.now():
-                bot.send_message(p.chat_id, f"Время в пути вышло, можешь использовать /go чтобы войти в локацию")
-        time.sleep(1)
+        try:
+            players = Player.select()
+            for p in players:
+                if datetime.datetime.now()-datetime.timedelta(seconds=1) < p.busy_until < datetime.datetime.now():
+                    bot.send_message(p.chat_id, f"Время в пути вышло, можешь использовать /go чтобы войти в локацию")
+            time.sleep(1)
+        except Exception as e:
+            print(f"TREAD EXCEPTION: {e}")
+            print(__name__ + " restarted")

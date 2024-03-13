@@ -5,6 +5,7 @@ from bot import bot
 from commands import *
 from db import Player
 from log import *
+from db import Var
 
 
 
@@ -127,4 +128,21 @@ def talk(message: telebot.types.Message):
     bot.send_message(chat_id,
                      f"<b>{player.name}:</b> {message.text}",
                      parse_mode="html")
+    call_room = Var.get_or_none(name="call_room")
+    if call_room is not None:
+        called = Player.get_or_none(Player.chat_id == chat_id)
+        if called is None:
+            return
+        bot.send_message(call_room.value,
+                         f"<b>{player.name} -> {called.name}:</b> {message.text}",
+                         parse_mode="html")
 
+
+@bot.message_handler(is_admin=True, length=1, is_private=False, commands=['create_call_room'])
+@log_handler
+def call(message: telebot.types.Message):
+    var = Var.create(name="call_room", value=message.chat.id)
+    var.save()
+    bot.send_message(message.chat.id,
+                     f"Теперь это админская комната для прослушки звонков)",
+                     parse_mode="html")

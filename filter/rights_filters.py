@@ -47,7 +47,7 @@ class IsAdmin(telebot.custom_filters.SimpleCustomFilter):
         p = Player.get_or_none(Player.chat_id == message.from_user.id)
         if p is None:
             return False
-        return p.has_right(Rights.ADMIN)
+        return p.has_right(Rights.GAME_ADMIN)
 
 
 bot.add_custom_filter(IsAdmin())
@@ -116,3 +116,15 @@ class CanCall(telebot.custom_filters.SimpleCustomFilter):
 
 bot.add_custom_filter(CanCall())
 
+
+class CanFixMasq(telebot.custom_filters.SimpleCustomFilter):
+    key = 'can_fix_masquerade'
+    @staticmethod
+    def check(message: telebot.types.Message):
+        p = Player.get_or_none(Player.chat_id == message.from_user.id)
+        if p is None:
+            return False
+        return p.has_right(Rights.FIX_MASQUERADE)
+
+
+bot.add_custom_filter(CanFixMasq())

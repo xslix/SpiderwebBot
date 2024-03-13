@@ -59,18 +59,18 @@ def go_target(message: telebot.types.Message):
                          f"Ты еще в пути до <b>{player.busy_until.strftime('%H:%M:%S')}</b>",
                          parse_mode="html")
         return
+    go_func(message, name)
+
+@log_handler
+def go_func(message, name):
+    player = Player.get_or_none(Player.chat_id == message.chat.id)
+    loc = Location.get_or_none(Location.name == name)
     if player.current_location is not None:
         loc = Location.get_or_none(Location.chat_id == player.current_location)
         bot.send_message(message.chat.id,
                          f"Для начала выйди из локации <b>{loc.name}</b> с помощью команды <b>/exit</b>",
                          parse_mode="html")
         return
-    go_func(message, name)
-
-
-def go_func(message, name):
-    player = Player.get_or_none(Player.chat_id == message.chat.id)
-    loc = Location.get_or_none(Location.name == name)
     if loc is None:
         bot.send_message(message.chat.id, f"Локации {name} не существует", parse_mode="html")
         return

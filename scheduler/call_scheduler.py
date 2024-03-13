@@ -17,10 +17,14 @@ def start():
 
 def work():
     while True:
-        calls = Call.select()
-        for call in calls:
-            if call.end_timestamp < datetime.datetime.now():
-                bot.send_message(call.called_id, f"Звонок завершен по времени.", parse_mode="html")
-                bot.send_message(call.caller_id, f"Звонок завершен по времени.", parse_mode="html")
-                call.delete_instance()
-        time.sleep(1)
+        try:
+            calls = Call.select()
+            for call in calls:
+                if call.end_timestamp < datetime.datetime.now():
+                    bot.send_message(call.called_id, f"Звонок завершен по времени.", parse_mode="html")
+                    bot.send_message(call.caller_id, f"Звонок завершен по времени.", parse_mode="html")
+                    call.delete_instance()
+            time.sleep(1)
+        except Exception as e:
+            print(f"TREAD EXCEPTION: {e}")
+            print(__name__ + " restarted")

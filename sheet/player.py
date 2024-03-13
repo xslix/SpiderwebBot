@@ -40,6 +40,20 @@ def broke_masquerade(user_id):
             return
 
 
+def fix_masquerade(user_id):
+    update_if_needed()
+    global writing_tread
+    if writing_tread.is_alive():
+        writing_tread.join()
+    for i, row in enumerate(data):
+        if len(row) > 10 and str(row[3]).lower() == str(user_id):
+            row[10] -= 1
+            writing_tread = threading.Thread(target=lambda :sheet.sheet.worksheet("Player").update(range_name=f'K{3+i}', values=[[row[10]]], value_input_option='USER_ENTERED'))
+            writing_tread.start()
+            return
+
+
+
 def signup(name, id):
     update_if_needed()
     for i, row in enumerate(data):

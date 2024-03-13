@@ -24,6 +24,7 @@ class Rights(Enum):
     CALL = 2 ** 9
     IMPROVED_BEAST = 2 ** 10
     SEE_PERSON_TYPE = 2 ** 11
+    FIX_MASQUERADE = 2 ** 12
 
     ADMIN = PLAYER | GAME_ADMIN | LOCK_LOCATION | FIGHT | CALL | MOVE
     SUPER_ADMIN = ADMIN | BOT_ADMIN | CHANGE_RIGHTS
@@ -59,3 +60,4 @@ from db.location import *
 from db.player import *
 from db.token import *
 from db.call import *
+from db.var import *
