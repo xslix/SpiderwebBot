@@ -52,18 +52,13 @@ def unmute(message: telebot.types.Message):
 @bot.message_handler(is_admin=True, length=1, commands=['promote_admins'])
 def add_location(message: telebot.types.Message):
     pp = Player.select()
-    for p in filter(lambda x: x.has_right(Rights.ADMIN), pp):
-        bot.promote_chat_member(message.chat.id,
-                                p.chat_id,
-                                True, True, True, True, True, True, True, True, False, True, True)
+    for p in filter(lambda x: x.has_right(Rights.GAME_ADMIN), pp):
+        try:
+            bot.promote_chat_member(message.chat.id,
+                                    p.chat_id,
+                                    True, True, True, True, True, True, True, True, False, True, True)
+        except Exception as e:
+            print("Get chat admin exception:", e)
+    bot.send_message(message.chat.id, f"МГ установлены администраторами чата (наверное).", parse_mode="html")
 
 
-# @bot.message_handler(is_admin=True, length=1, commands=['set_darknet_admin_chat'])
-# def set_darknet_admin_chat(message: telebot.types.Message):
-#     Const.create(name=DARKNET_ADMIN_CHAT, value=message.chat.id)
-#     bot.send_message(message.chat.id, f"Чат установлен как админский чат даркнета.", parse_mode="html")
-
-@bot.message_handler(is_admin=True, length=1, commands=['set_issue_admin_chat'])
-def set_issue_admin_chat(message: telebot.types.Message):
-    Const.create(name=ISSUE_ADMIN_CHAT, value=message.chat.id)
-    bot.send_message(message.chat.id, f"Чат установлен как админский чат заявок.", parse_mode="html")

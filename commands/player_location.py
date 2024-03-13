@@ -11,6 +11,7 @@ from commands.person import issues as person_issues
 from commands.feed import issues as feed_issues
 from log import *
 
+
 @bot.message_handler(can_move=True, is_private=True, length=1, commands=['go', 'иду'])
 @log_handler
 def go(message: telebot.types.Message):

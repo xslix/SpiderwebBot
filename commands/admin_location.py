@@ -14,6 +14,7 @@ def add_location(message: telebot.types.Message):
         bot.send_message(message.chat.id,
                          f"Локация с именем {loc.name} уже существует",
                          parse_mode="html")
+        mutex.release()
         return
 
     loc = Location.get_or_none(Location.chat_id == message.chat.id)
@@ -21,18 +22,21 @@ def add_location(message: telebot.types.Message):
         bot.send_message(message.chat.id,
                          f"В данном чате уже существует локация {loc.name}",
                          parse_mode="html")
+        mutex.release()
         return
 
     if not is_correct_location_name(message.html_text.split()[1]):
         bot.send_message(message.chat.id,
                          f"Некорректное имя локации {message.html_text.split()[1]}",
                          parse_mode="html")
+        mutex.release()
         return
     stat = bot.get_chat_member(message.chat.id, bot.get_me().id).status
     if stat not in ['administrator', 'creator']:
         bot.send_message(message.chat.id,
                          "Бот не является администратором в данном чате",
                          parse_mode="html")
+        mutex.release()
         return
 
     loc = Location.create(name=message.html_text.split()[1],
