@@ -47,7 +47,7 @@ def roll(message: telebot.types.Message):
         bot.send_message(message.chat.id, f"Использование: /roll [Количество кубов или навык] [Сложность = 6] [Автоуспехов = 0]",
                          parse_mode="html")
         return
-    if count > 15 or bonus > 15 or difficult > 10 or difficult < 1:
+    if count > 20 or bonus > 20 or difficult > 10 or difficult < 1:
         bot.send_message(message.chat.id,
                          f"Подозреваем, ты опечатался в аргументах. Сделай бросок повторно.",
                          parse_mode="html")
